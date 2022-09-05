@@ -1,0 +1,82 @@
+﻿@inject IUserService userService
+@inject NavigationManager NavManager
+@inject AuthenticationStateProvider authStateProvider
+
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">NLB</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+        <AuthorizeView>
+            <NotAuthorized>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="login" Match="NavLinkMatch.All">
+                        <span class="oi oi-account-login" aria-hidden="true"></span> چوونەژوورەوە
+                    </NavLink>
+                </div>
+            </NotAuthorized>
+
+            <Authorized>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="Customers" Match="NavLinkMatch.All">
+                        <span class="oi oi-people" aria-hidden="true"></span> مشتەرییەكان
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="Transactions" Match="NavLinkMatch.All">
+                        <span class="oi oi-transfer" aria-hidden="true"></span> جووڵەی پارە
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="Loan" Match="NavLinkMatch.All">
+                        <span class="oi oi-dollar" aria-hidden="true"></span> قەرز
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="CustomerSummary" Match="NavLinkMatch.Prefix">
+                        <span class="oi oi-document" aria-hidden="true"></span> كەشفی حساب
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="User/ChangeUserName" Match="NavLinkMatch.All">
+                        <span class="oi oi-person" aria-hidden="true"></span> گۆڕینی ناوی بەكارهێنەر
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="User/ChangePassword" Match="NavLinkMatch.All">
+                        <span class="oi oi-lock-locked" aria-hidden="true"></span> گۆڕینی وشەی نهێنی
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3" @onclick="LogOut">
+                    <NavLink class="nav-link" href="Login" Match="NavLinkMatch.All">
+                        <span class="oi oi-account-logout" aria-hidden="true"></span> دەرچوون
+                    </NavLink>
+                </div>
+            </Authorized>
+        </AuthorizeView>
+    </nav>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    private async Task LogOut()
+    {
+        await userService.LogOutAsync();
+        await authStateProvider.GetAuthenticationStateAsync();
+        NavManager.NavigateTo("Login");
+    }
+}

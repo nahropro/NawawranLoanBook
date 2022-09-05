@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project>
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAeArX5CXnVEqFR5l56CywHgAAAAACAAAAAAAQZgAAAAEAACAAAABysNIZNq97udwOlRAyUrp6Cgf9Tx6VizjOb19mnyq5ggAAAAAOgAAAAAIAACAAAADKinZ12nkk4x2r+QmpSCbEIXjVjJBUefHzuKCrN4dFmCAAAAALT9yRl70g/nhYWHxtD9nEI/Wny+jXq7TXYEfdMY6u/0AAAAAaPhY7b+ViUTFQvbty4px0UdejSVWJcGmTv8Dxvw/ZrDGUBv0oLh2z15syC6nU8EGjcQwjyfX0qrELm3uwhw2M</EncryptedPassword>
+    <History>True|2022-03-24T18:16:29.7814147Z;False|2022-03-24T21:06:32.2427665+03:00;False|2022-03-24T18:40:58.9414318+03:00;True|2022-03-24T18:37:08.2742881+03:00;False|2022-03-24T18:30:38.0620521+03:00;</History>
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="SqlServerSmarter">
+      <Value>Data Source=SQL8001.site4now.net%3b Initial Catalog=db_a848c8_nlb%3b User Id=db_a848c8_nlb_admin%3b Password=xsw2!QAZ</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+  <ItemGroup>
+    <EFMigrations Include="NLB.Server.Data.NLBDbContext">
+      <Value>Data Source=SQL8001.site4now.net%3b Initial Catalog=db_a848c8_nlb%3b User Id=db_a848c8_nlb_admin%3b Password=xsw2!QAZ</Value>
+    </EFMigrations>
+  </ItemGroup>
+</Project>

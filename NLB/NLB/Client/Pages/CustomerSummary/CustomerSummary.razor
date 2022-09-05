@@ -1,0 +1,141 @@
+﻿@page "/CustomerSummary"
+@page "/CustomerSummary/{CustomerId:int}"
+@inject IReportService reportService
+@inject NavigationManager navManager
+@inject IMapper mapper
+@inject IToaster toaster
+@inject BlazorDialog.IBlazorDialogService dialog
+@inject ITransactionService transactionService
+@attribute [Authorize]
+
+<PageTitle>كەشفی حساب</PageTitle>
+
+<h3>كەشفی حساب</h3>
+
+<div>
+    <CustomerSelector @bind-CustomerId="CustomerId" OnCustomerSelected="OnCustomerSelectedAsync" />
+</div>
+
+<button type="button" class="btn btn-primary add-button" @onclick="AddTransactionAsync">
+    <span class="oi oi-plus"></span>
+    زیادكردن
+</button>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>كۆد</th>
+            <th>ڕێككەوت</th>
+            <th>نەقدی پێدان</th>
+            <th>نەقدی وەرگرتن</th>
+            <th>داشكاندنی پێدان</th>
+            <th>داشكاندنی وەرگرتن</th>
+            <th>باڵانس</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <Virtualize Items="customerSummary.CustomerSummaryDetails.ToList()">
+            <tr>
+                <td>@context.Id</td>
+                <td>@context.Date.ToString("yyyy/MM/dd")</td>
+                <td>@(context.MoneyInOrOut?string.Format("{0:G29}", context.Amount):"")</td>
+                <td>@(!context.MoneyInOrOut?string.Format("{0:G29}", context.Amount):"")</td>
+                <td>@(context.MoneyInOrOut?string.Format("{0:G29}", context.DiscountAmount):"")</td>
+                <td>@(!context.MoneyInOrOut?string.Format("{0:G29}", context.DiscountAmount):"")</td>
+                <td class="@(context.BalanceInTime>0? "red-text":"")">@string.Format("{0:G29}", context.BalanceInTime)</td>
+                <td>
+                    <span class="btn" @onclick="@(()=> UpdateTransactionAsync(context))">
+                        <span class="oi oi-pencil"></span>
+                    </span>
+                    <span class="btn" @onclick="@(()=> RemoveTransactionAsync(context))">
+                        <span class="oi oi-trash red-text"></span>
+                    </span>
+                </td>
+            </tr>
+            @if (!string.IsNullOrWhiteSpace(context.Note))
+            {
+                <tr class="alert alert-info">
+                    <td colspan="8">@context.Note</td>
+                </tr>
+            }
+        </Virtualize>
+    </tbody>
+</table>
+
+<UpdateTransaction Transaction="transaction" TransactionId="transactionId" @bind-Open="updateTransactionDialogOpen"
+                   OnAddSucceeded="@(c=> LoadCustomerSummaryAsync())"
+                   OnUpdateSucceeded="@(c=> LoadCustomerSummaryAsync())" AddOrUpdate="addOrUpdate" />
+
+@code {
+    [Parameter]
+    public int? CustomerId { get; set; }
+
+    private CustomerSummaryReportResource customerSummary = new CustomerSummaryReportResource();
+    private UpdateTransactionResource transaction = new UpdateTransactionResource();
+    private int? transactionId;
+    private bool updateTransactionDialogOpen = false;
+    private bool addOrUpdate;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await LoadCustomerSummaryAsync();
+    }
+
+    private async Task LoadCustomerSummaryAsync()
+    {
+        if (CustomerId.HasValue)
+            customerSummary = await reportService.GetCustomerSummaryAsync(CustomerId.GetValueOrDefault());
+    }
+
+    private async Task OnCustomerSelectedAsync(SelectCustomerResource customer)
+    {
+        navManager.NavigateTo($"CustomerSummary/{customer.Id}");
+    }
+
+    private async Task UpdateTransactionAsync(CustomerSummaryDetail summaryDetail)
+    {
+        transaction = mapper.Map<UpdateTransactionResource>(summaryDetail);
+        transaction.CustomerId = CustomerId.GetValueOrDefault();
+        transactionId = summaryDetail.Id;
+        addOrUpdate = false;
+        updateTransactionDialogOpen = true;
+    }
+
+    private async Task AddTransactionAsync()
+    {
+        transaction = new UpdateTransactionResource
+            {
+                Date = DateTime.Now.Date
+            };
+        transaction.CustomerId = CustomerId.GetValueOrDefault();
+        transactionId = null;
+        addOrUpdate = true;
+        updateTransactionDialogOpen = true;
+    }
+
+    private async Task RemoveTransactionAsync(CustomerSummaryDetail customerDetail)
+    {
+        var dialogResult = await dialog.ShowDialog<bool>("RemoveDialog",
+            new DialogModel
+                {
+                    Message = "سڕینەوەی پسووڵە",
+                    Title = $"دڵنیای لە سڕینەوەی پسووڵەی '{customerDetail.Id}'؟"
+                });
+
+        if (dialogResult)
+        {
+            var result = await transactionService.RemoveTransactionAsync(customerDetail.Id);
+
+            if (result)
+            {
+                await LoadCustomerSummaryAsync();
+                toaster.Success("كارەكە سەركەوتووبوو", "سڕینەوە");
+            }
+            else
+            {
+                toaster.Error("كارەكە سەركەوتوونەبوو", "سڕینەوە");
+            }
+        }
+    }
+}

@@ -1,0 +1,24 @@
+﻿<Dialog id="RemoveDialog" Centered=true>
+    <DialogInputProvider TInput="DialogModel">
+        <DialogHeader>
+            <h4>@context.Input.Title</h4>
+        </DialogHeader>
+        <DialogBody>
+            <p>
+                @context.Input.Message
+            </p>
+        </DialogBody>
+        <DialogFooter>
+            <div>
+                <button type="button" class="btn btn-primary" @onclick="@(()=> context.Dialog.Hide(true))">
+                    <span class="oi oi-check"></span>
+                    بەڵێ
+                </button>
+                <button type="button" class="btn btn-secondary" @onclick="@(()=> context.Dialog.Hide(false))">
+                    <span class="oi oi-circle-x"></span>
+                    نەخێر
+                </button>
+            </div>
+        </DialogFooter>
+    </DialogInputProvider>
+</Dialog>

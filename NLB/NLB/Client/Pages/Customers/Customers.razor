@@ -1,0 +1,133 @@
+﻿@page "/Customers"
+@inject ICustomerService customerService;
+@inject IToaster toaster
+@inject BlazorDialog.IBlazorDialogService dialog
+@inject IMapper mapper
+@attribute [Authorize]
+
+
+<PageTitle>مشتەرییەكان</PageTitle>
+<h1>مشتەرییەكان</h1>
+
+<UpdateCustomer Customer="@customer" @bind-Open="updateCustomerDialogOpen" OnUpdateSucceeded="CustomerUpdatedAsync"
+                         AddOrUpdate="@addOrUpdate" CustomerId="@customerId" OnAddSucceeded="CustomerAddedAsync" />
+
+<div class="row">
+    <div class="col-md">
+        <button type="button" class="btn btn-primary add-button" @onclick="AddCustomer">
+            <span class="oi oi-plus"></span>
+            زیادكردن
+        </button>
+    </div>
+    <div class="col-md-4">
+        <input type="search" class="form-control" placeholder="گەڕان" @bind="@s"
+               @oninput="@(e=> LoadCustomersAsync(e.Value.ToString()))" />
+    </div>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>كۆد</th>
+            <th>ناو</th>
+            <th>تەلەفۆن</th>
+            <th>باڵانس</th>
+            <th>ناونیشان</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <Virtualize Items="@customers">
+            <tr>
+                <td>@context.Id</td>
+                <td>
+                    <NavLink href="@($"CustomerSummary/{context.Id}")" Match="NavLinkMatch.All">
+                        @context.FullName
+                    </NavLink>
+                </td>
+                <td>@context.Phone</td>
+                <td class="@(context.Balance<0? "red-text":"")">@string.Format("{0:G29}", context.Balance)</td>
+                <td>@context.Address</td>
+                <td>
+                    <span class="btn" @onclick="@(()=> UpdateCustomer(context))">
+                        <span class="oi oi-pencil"></span>
+                    </span>
+                    <span class="btn" @onclick="@(()=> RemoveCustomer(context))">
+                        <span class="oi oi-trash red-text"></span>
+                    </span>
+                </td>
+            </tr>
+        </Virtualize>
+    </tbody>
+</table>
+
+@code {
+    private List<SelectCustomerResource> customers = new List<SelectCustomerResource>();
+    private UpdateCustomerResource customer;
+    private string s = "";
+    private bool updateCustomerDialogOpen;
+    private bool addOrUpdate = true;
+    private int? customerId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCustomersAsync();
+    }
+
+    private async Task LoadCustomersAsync(string s = null)
+    {
+        customers = await customerService.GetCustomersAsync(s);
+    }
+
+    private void UpdateCustomer(SelectCustomerResource customer)
+    {
+        this.customer = mapper.Map<UpdateCustomerResource>(customer);
+        customerId = customer.Id;
+        addOrUpdate = false;
+        updateCustomerDialogOpen = true;
+    }
+
+    private void AddCustomer()
+    {
+        customer = new UpdateCustomerResource();
+        customerId = null;
+        addOrUpdate = true;
+        updateCustomerDialogOpen = true;
+    }
+
+    private async Task CustomerAddedAsync(SelectCustomerResource customer)
+    {
+        this.customers.Add(customer);
+    }
+
+    private async Task CustomerUpdatedAsync(SelectCustomerResource customer)
+    {
+        var c = customers.Find(x => x.Id == customer.Id);
+        mapper.Map(customer, c);
+    }
+
+    private async Task RemoveCustomer(SelectCustomerResource customer)
+    {
+        var dialogResult = await dialog.ShowDialog<bool>("RemoveDialog",
+            new DialogModel
+                {
+                    Message = "سڕینەوەی مشتەری",
+                    Title = $"دڵنیای لە سڕینەوەی '{customer.FullName}'؟"
+                });
+
+        if (dialogResult)
+        {
+            var result = await customerService.RemoveCustomerAsync(customer.Id);
+
+            if (result)
+            {
+                customers.RemoveAll(x => x.Id == customer.Id);
+                toaster.Success("كارەكە سەركەوتووبوو", "سڕینەوە");
+            }
+            else
+            {
+                toaster.Error("كارەكە سەركەوتوونەبوو", "سڕینەوە");
+            }
+        }
+    }
+}

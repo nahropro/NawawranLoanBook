@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NLB.Shared</name>
+    </assembly>
+    <members>
+        <member name="P:NLB.Shared.Resources.QueryResources.LoanQueryResource.CreditorOrDebter">
+            <summary>
+            False for creditor, True for debter, Null for both
+            </summary>
+        </member>
+        <member name="P:NLB.Shared.Resources.QueryResources.TransactionQueryResource.MoneyInOrOut">
+            <summary>
+            False for money-in (customer purchase),
+            True for money-out(customer withdraw),
+            Null for both
+            </summary>
+        </member>
+        <member name="P:NLB.Shared.Resources.ReportResources.CustomerSummaryDetail.MoneyInOrOut">
+            <summary>
+            False for money-in (customer purchase), True for money-out(customer withdraw)
+            </summary>
+        </member>
+        <member name="P:NLB.Shared.Resources.TransactionResources.SelectTransactionResource.MoneyInOrOut">
+            <summary>
+            False for money-in (customer purchase), True for money-out(customer withdraw)
+            </summary>
+        </member>
+        <member name="P:NLB.Shared.Resources.TransactionResources.UpdateTransactionResource.Amount">
+            <summary>
+            Only positive number
+            </summary>
+        </member>
+        <member name="P:NLB.Shared.Resources.TransactionResources.UpdateTransactionResource.DiscountAmount">
+            <summary>
+            Only positive number
+            </summary>
+        </member>
+        <member name="P:NLB.Shared.Resources.TransactionResources.UpdateTransactionResource.MoneyInOrOut">
+            <summary>
+            False for money-in (customer purchase), True for money-out(customer withdraw)
+            </summary>
+        </member>
+        <member name="P:NLB.Shared.Resources.UserResources.ChangeUserNameResource.UserName">
+            <summary>
+            Spaces from start and end is going to be removed,
+            and empty string is goning to be rejected
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,27 @@
+﻿.selector{
+    z-index:999999;
+    position:absolute;
+    right:0;
+    top:3rem;
+    bottom:inherit;
+    display:flow;
+    background-color: whitesmoke;
+    width:25rem;
+    border-radius:1rem;
+    overflow:visible;
+}
+
+.data{
+    max-height:20rem;
+}
+
+.parent{
+    position:relative;
+}
+
+tbody>tr:hover{
+    border: 1px solid green;
+    border-radius: 1rem;
+    background-color: burlywood;
+    cursor: pointer;
+}

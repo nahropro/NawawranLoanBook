@@ -1,0 +1,75 @@
+﻿@inject ICustomerService customerSerivce
+
+<div>
+    <EditForm class="row gy-2 gx-3 align-items-center" Model=Query OnSubmit=Submit>
+
+        <div class="col-auto">
+            <div class="input-group">
+                <div class="input-group-text">
+                    كۆد
+                    <InputNumber @bind-Value=Query.Id class="form-control" placeholder="كۆد" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-auto">
+            <div class="input-group-text">
+                جۆر
+                <InputSelect @bind-Value=Query.MoneyInOrOut class="form-select">
+                    <option value="">هەموو</option>
+                    <option value="false">وەرگرتن</option>
+                    <option value="true">پێدان</option>
+                </InputSelect>
+            </div>
+        </div>
+
+        <div class="col-auto">
+            <div class="input-group">
+                <div class="input-group-text">
+                    مشتەری
+                    <CustomerSelector CustomerChanged=@(e=> Query.CustomerId=(e.Id==0?null:e.Id)) />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-auto">
+            <div class="input-group">
+                <div class="input-group-text">
+                    لە
+                    <InputDate @bind-Value=Query.StartDate class="form-control" placeholder="لە" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-auto">
+            <div class="input-group">
+                <div class="input-group-text">
+                    تا
+                    <InputDate @bind-Value=Query.EndDate class="form-control" placeholder="تا" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">پیشاندان</button>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    [Parameter]
+    public TransactionQueryResource Query { get; set; } = new TransactionQueryResource();
+    [Parameter]
+    public EventCallback<TransactionQueryResource> QueryChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<TransactionQueryResource> OnSubmit { get; set; }
+
+    private SelectCustomerResource selectedCustomer = new SelectCustomerResource();
+
+    private async Task Submit()
+    {
+        await QueryChanged.InvokeAsync(Query);
+        await OnSubmit.InvokeAsync(Query);
+    }
+}

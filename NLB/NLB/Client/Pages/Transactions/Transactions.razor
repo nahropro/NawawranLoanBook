@@ -1,0 +1,151 @@
+﻿@page "/transactions"
+@page "/"
+@inject ITransactionService transactionService
+@inject IMapper mapper
+@inject IToaster toaster
+@inject BlazorDialog.IBlazorDialogService dialog
+@attribute [Authorize]
+
+<PageTitle>جووڵەی پارە</PageTitle>
+<h1>جووڵەی پارە</h1>
+
+<TransactionFilters @bind-Query="query" OnSubmit="SubmitFilterAsync" />
+
+<hr />
+
+<button type="button" class="btn btn-primary add-button" @onclick="AddTransactionAsync">
+    <span class="oi oi-plus"></span>
+    زیادكردن
+</button>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>كۆد</th>
+            <th>مشتەری</th>
+            <th>ڕێككەوت</th>
+            <th>نەقد</th>
+            <th>داشكاندن</th>
+            <th>جۆر</th>
+            <th>تێبینی</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <Virtualize Items="transactions">
+            <tr class="alert @(context.MoneyInOrOut?"alert-danger":"alert-info")">
+                <td>@context.Id</td>
+                <td>
+                    <NavLink href="@($"CustomerSummary/{context.Customer.Id}")" Match="NavLinkMatch.All">
+                        @context.Customer.FullName
+                    </NavLink>
+                </td>
+                <td>@context.Date.ToString("yyyy/MM/dd")</td>
+                <td>@string.Format("{0:G29}", context.Amount)</td>
+                <td>@string.Format("{0:G29}", context.DiscountAmount)</td>
+                <td>@(context.MoneyInOrOut?"پێدان":"وەرگرتن")</td>
+                <td>@context.Note</td>
+                <td>
+                    <span class="btn" @onclick="@(()=> UpdateTransactionAsync(context))">
+                        <span class="oi oi-pencil"></span>
+                    </span>
+                    <span class="btn" @onclick="@(()=> RemoveTransactionAsync(context))">
+                        <span class="oi oi-trash red-text"></span>
+                    </span>
+                </td>
+            </tr>
+        </Virtualize>
+    </tbody>
+</table>
+
+<UpdateTransaction @bind-Open="updateTransactionDialogOpen" Transaction="transaction" TransactionId="transactionId"
+                   AddOrUpdate="addOrUpdate" OnAddSucceeded="TransactionAddedAsync"
+                   OnUpdateSucceeded="TransactionUpdatedAsync" />
+
+@code {
+    private List<SelectTransactionResource> transactions = new List<SelectTransactionResource>();
+    private bool updateTransactionDialogOpen;
+    private bool addOrUpdate = true;
+    private int? transactionId;
+    private UpdateTransactionResource transaction = new UpdateTransactionResource
+        {
+            Date = DateTime.Now.Date
+        };
+
+    private TransactionQueryResource query = new TransactionQueryResource
+        {
+            MoneyInOrOut = false,
+            StartDate = DateTime.Now.Date,
+            EndDate = DateTime.Now.Date
+        };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadTransactionsAsync();
+    }
+
+    private async Task SubmitFilterAsync()
+    {
+        await LoadTransactionsAsync();
+    }
+
+    private async Task LoadTransactionsAsync()
+    {
+        transactions = await transactionService.GetTransactionsAsync(query);
+    }
+
+    private async Task AddTransactionAsync()
+    {
+        transaction = new UpdateTransactionResource
+            {
+                Date = DateTime.Now.Date
+            };
+        transactionId = null;
+        addOrUpdate = true;
+        updateTransactionDialogOpen = true;
+    }
+
+    private async Task UpdateTransactionAsync(SelectTransactionResource transaction)
+    {
+        this.transaction = mapper.Map<UpdateTransactionResource>(transaction);
+        transactionId = transaction.Id;
+        addOrUpdate = false;
+        updateTransactionDialogOpen = true;
+    }
+
+    private async Task TransactionAddedAsync(SelectTransactionResource transaction)
+    {
+        transactions.Add(transaction);
+    }
+
+    private async Task TransactionUpdatedAsync(SelectTransactionResource transaction)
+    {
+        var t = transactions.Find(x => x.Id == transaction.Id);
+        mapper.Map(transaction, t);
+    }
+
+    private async Task RemoveTransactionAsync(SelectTransactionResource transaction)
+    {
+        var dialogResult = await dialog.ShowDialog<bool>("RemoveDialog",
+            new DialogModel
+                {
+                    Message = "سڕینەوەی پسووڵە",
+                    Title = $"دڵنیای لە سڕینەوەی پسووڵەی '{transaction.Id}'؟"
+                });
+
+        if (dialogResult)
+        {
+            var result = await transactionService.RemoveTransactionAsync(transaction.Id);
+
+            if (result)
+            {
+                transactions.RemoveAll(x => x.Id == transaction.Id);
+                toaster.Success("كارەكە سەركەوتووبوو", "سڕینەوە");
+            }
+            else
+            {
+                toaster.Error("كارەكە سەركەوتوونەبوو", "سڕینەوە");
+            }
+        }
+    }
+}

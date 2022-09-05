@@ -1,0 +1,174 @@
+﻿@using System.Globalization
+@inject ITransactionService transactionService
+@inject ICustomerService customerService
+
+@if (Open)
+{
+    <div class="vh-100 outer">
+        <div class="modal-dialog modal-dialog-centered" tabindex="-1" role="dialog"
+         @onclick:stopPropagation="true">
+            <div class="modal-dialog modal-dialog-centered w-100" role="document">
+                <div class="modal-content">
+                    <EditForm Model="@Transaction" OnValidSubmit="@SaveAsync">
+                        <DataAnnotationsValidator />
+                        <div class="modal-header">
+                            <h5 class="modal-title">
+                                @if (AddOrUpdate)
+                                {
+                                    <text>زیادكردنی جووڵەی پارە</text>
+                                }
+                                else
+                                {
+                                    <text>چاككردنی جووڵەی پارە</text>
+                                }
+                            </h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    جۆر
+                                    <InputSelect @bind-Value="Transaction.MoneyInOrOut" class="form-control">
+                                        <option value="false">وەرگرتن</option>
+                                        <option value="true">پێدان</option>
+                                    </InputSelect>
+                                </label>
+                                <ValidationMessage For="()=> Transaction.MoneyInOrOut" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    مشتەری
+                                    <CustomerSelector @bind-Customer="customer"
+                                                  OnCustomerSelected="@(c=> Transaction.CustomerId=c.Id)" />
+                                </label>
+                                <ValidationMessage For="()=> Transaction.CustomerId" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    نەقد
+                                    <InputFormattedNumber @bind-Value="Transaction.Amount" FormatString="G29"
+                                                      class="form-control" placeholder="نەقد" />
+                                </label>
+                                <ValidationMessage For="()=> Transaction.Amount" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    داشكاندن
+                                    <InputFormattedNumber @bind-Value="Transaction.DiscountAmount" FormatString="G29"
+                                                      class="form-control" placeholder="داشكاندن" />
+                                </label>
+                                <ValidationMessage For="()=> Transaction.DiscountAmount" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    ڕێككەوت
+                                    <InputDate @bind-Value="Transaction.Date" class="form-control" placeholder="ڕێككەوت" />
+                                </label>
+                                <ValidationMessage For="()=> Transaction.Date" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    تێبینی
+                                    <InputText @bind-Value="Transaction.Note" class="form-control" placeholder="تێبینی" />
+                                </label>
+                                <ValidationMessage For="()=> Transaction.Note" />
+                            </div>
+
+                            @if (operationFailed)
+                            {
+                                <p class="alert alert-danger">كارەكە سەركەوتوونەبوو!</p>
+                            }
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">
+                                @if (AddOrUpdate)
+                                {
+                                    <span class="oi oi-plus"></span>
+                                    <text>زیادكردن</text>
+                                }
+                                else
+                                {
+                                    <span class="oi oi-pencil"></span>
+                                    <text>چاككردن</text>
+                                }
+                            </button>
+
+                            <button type="button" class="btn btn-secondary" @onclick="Close">
+                                <span class="oi oi-account-logout"></span>
+                                داخستن
+                            </button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int? TransactionId { get; set; }
+
+    [Parameter]
+    public UpdateTransactionResource Transaction { get; set; }
+
+    [Parameter]
+    public bool Open { get; set; } = false;
+    [Parameter]
+    public EventCallback<bool> OpenChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<SelectTransactionResource> OnAddSucceeded { get; set; }
+
+    [Parameter]
+    public EventCallback<SelectTransactionResource> OnUpdateSucceeded { get; set; }
+
+    /// <summary>
+    /// true for add, false for update
+    /// </summary>
+    [Parameter]
+    public bool AddOrUpdate { get; set; }
+
+    private bool operationFailed = false;
+
+    private SelectCustomerResource customer = new SelectCustomerResource();
+
+    private async Task Close()
+    {
+        Open = false;
+        operationFailed = false;
+        await OpenChanged.InvokeAsync(Open);
+    }
+
+    private async Task SaveAsync()
+    {
+        SelectTransactionResource result;
+
+        if (AddOrUpdate)
+            result = await transactionService.AddTransactionAsync(Transaction);
+        else
+            result = await transactionService.UpdateCustomerAsync(TransactionId.GetValueOrDefault(), Transaction);
+
+        if (result is not null)
+        {
+            if (AddOrUpdate)
+                await OnAddSucceeded.InvokeAsync(result);
+            else
+                await OnUpdateSucceeded.InvokeAsync(result);
+
+            await Close();
+        }
+        else
+        {
+            operationFailed = true;
+        }
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Transaction?.CustomerId != 0)
+            customer = await customerService.GetCustomerAsync(Transaction.CustomerId);
+        else
+            customer = new SelectCustomerResource();
+    }
+}

@@ -1,0 +1,14 @@
+C:\Users\Nahro\source\Workspaces\NawawranLoanBook\NLB\NLB\Shared\bin\Debug\net6.0\NLB.Shared.deps.json
+C:\Users\Nahro\source\Workspaces\NawawranLoanBook\NLB\NLB\Shared\bin\Debug\net6.0\NLB.Shared.dll
+C:\Users\Nahro\source\Workspaces\NawawranLoanBook\NLB\NLB\Shared\bin\Debug\net6.0\NLB.Shared.pdb
+C:\Users\Nahro\source\Workspaces\NawawranLoanBook\NLB\NLB\Shared\bin\Debug\net6.0\NLB.Shared.xml
+C:\Users\Nahro\source\Workspaces\NawawranLoanBook\NLB\NLB\Shared\obj\Debug\net6.0\NLB.Shared.csproj.AssemblyReference.cache
+C:\Users\Nahro\source\Workspaces\NawawranLoanBook\NLB\NLB\Shared\obj\Debug\net6.0\NLB.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Nahro\source\Workspaces\NawawranLoanBook\NLB\NLB\Shared\obj\Debug\net6.0\NLB.Shared.AssemblyInfoInputs.cache
+C:\Users\Nahro\source\Workspaces\NawawranLoanBook\NLB\NLB\Shared\obj\Debug\net6.0\NLB.Shared.AssemblyInfo.cs
+C:\Users\Nahro\source\Workspaces\NawawranLoanBook\NLB\NLB\Shared\obj\Debug\net6.0\NLB.Shared.csproj.CoreCompileInputs.cache
+C:\Users\Nahro\source\Workspaces\NawawranLoanBook\NLB\NLB\Shared\obj\Debug\net6.0\NLB.Shared.dll
+C:\Users\Nahro\source\Workspaces\NawawranLoanBook\NLB\NLB\Shared\obj\Debug\net6.0\refint\NLB.Shared.dll
+C:\Users\Nahro\source\Workspaces\NawawranLoanBook\NLB\NLB\Shared\obj\Debug\net6.0\NLB.Shared.xml
+C:\Users\Nahro\source\Workspaces\NawawranLoanBook\NLB\NLB\Shared\obj\Debug\net6.0\NLB.Shared.pdb
+C:\Users\Nahro\source\Workspaces\NawawranLoanBook\NLB\NLB\Shared\obj\Debug\net6.0\ref\NLB.Shared.dll

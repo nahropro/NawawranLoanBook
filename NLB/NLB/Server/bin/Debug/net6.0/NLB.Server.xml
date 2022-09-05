@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NLB.Server</name>
+    </assembly>
+    <members>
+        <member name="P:NLB.Server.Models.Database.Transaction.Amount">
+            <summary>
+            Only positive number
+            </summary>
+        </member>
+        <member name="P:NLB.Server.Models.Database.Transaction.DiscountAmount">
+            <summary>
+            Only positive number
+            </summary>
+        </member>
+        <member name="P:NLB.Server.Models.Database.Transaction.MoneyInOrOut">
+            <summary>
+            False for money-in (customer purchase), True for money-out(customer withdraw)
+            </summary>
+        </member>
+        <member name="M:NLB.Server.Repos.CustomerRepo.GetCustomersAsync(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="s">Search text</param>
+            <returns></returns>
+        </member>
+        <member name="M:NLB.Server.Repos.ICustomerRepo.GetCustomersAsync(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="s">Search text</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

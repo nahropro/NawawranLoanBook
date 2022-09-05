@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="nawawran-001-site1" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\Nahro\\source\\Workspaces\\NawawranLoanBook\\NLB\\NLB\\Server\\obj\\Release\\net6\.0\\win-x86\\PubTmp\\Out\\$" />
+  </parameter>
+  <parameter name="NLB.Server.Data.NLBDbContext" description="" value="Data Source=SQL8001.site4now.net; Initial Catalog=db_a848c8_nlb; User Id=db_a848c8_nlb_admin; Password=xsw2!QAZ" tags="dbfullsql">
+    <parameterEntry kind="ProviderPath" scope="dbfullsql" match="^C:\\Users\\Nahro\\source\\Workspaces\\NawawranLoanBook\\NLB\\NLB\\Server\\obj\\Release\\net6\.0\\win-x86\\PubTmp\\EFSQLScripts\\NLB\.Server\.Data\.NLBDbContext\.sql$" />
+  </parameter>
+</parameters>

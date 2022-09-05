@@ -1,0 +1,147 @@
+﻿@inject ICustomerService customerService
+@inject NavigationManager navManager
+
+@if (Open)
+{
+    <div class="vh-100 outer">
+        <div class="modal-dialog modal-dialog-centered" tabindex="-1" role="dialog"
+         @onclick:stopPropagation="true">
+            <div class="modal-dialog modal-dialog-centered w-100" role="document">
+                <div class="modal-content">
+                    <EditForm Model="@Customer" OnValidSubmit="@SaveAsync">
+                        <DataAnnotationsValidator />
+                        <div class="modal-header">
+                            <h5 class="modal-title">
+                                @if (AddOrUpdate)
+                                {
+                                    <text>زیادكردنی مشتەری</text>
+                                }
+                                else
+                                {
+                                    <text>چاككردنی مشتەری</text>
+                                }
+                            </h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    ناو
+                                    <InputText @bind-Value="Customer.FullName" class="form-control" placeholder="ناو" />
+                                </label>
+                                <ValidationMessage For="()=> Customer.FullName" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    تەلەفۆن
+                                    <InputText @bind-Value="Customer.Phone" class="form-control" placeholder="تەلەفۆن" />
+                                </label>
+                                <ValidationMessage For="()=> Customer.Phone" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    نانیشان
+                                    <InputText @bind-Value="Customer.Address" class="form-control" placeholder="ناونیشان" />
+                                </label>
+                                <ValidationMessage For="()=> Customer.Address" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-check-label">
+                                    <InputCheckbox @bind-Value="openCustomerSummary" class="form-check-input" />
+                                    لەكاتی تۆماركردن كەشفی حساب بكەرەوە
+                                </label>
+                            </div>
+
+                            @if (operationFailed)
+                            {
+                                <p class="alert alert-danger">كارەكە سەركەوتوونەبوو!</p>
+                            }
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">
+                                @if (AddOrUpdate)
+                                {
+                                    <span class="oi oi-plus"></span>
+                                    <text>زیادكردن</text>
+                                }
+                                else
+                                {
+                                    <span class="oi oi-pencil"></span>
+                                    <text>چاككردن</text>
+                                }
+                            </button>
+
+                            <button type="button" class="btn btn-secondary" @onclick="Close">
+                                <span class="oi oi-account-logout"></span>
+                                داخستن
+                            </button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int? CustomerId { get; set; }
+
+    [Parameter]
+    public UpdateCustomerResource Customer { get; set; }
+
+    [Parameter]
+    public bool Open { get; set; } = false;
+    [Parameter]
+    public EventCallback<bool> OpenChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<SelectCustomerResource> OnAddSucceeded { get; set; }
+
+    [Parameter]
+    public EventCallback<SelectCustomerResource> OnUpdateSucceeded { get; set; }
+
+    /// <summary>
+    /// true for add, false for update
+    /// </summary>
+    [Parameter]
+    public bool AddOrUpdate { get; set; }
+
+    private bool operationFailed = false;
+
+    private bool openCustomerSummary = false;
+
+    private async Task Close()
+    {
+        Open = false;
+        operationFailed = false;
+        await OpenChanged.InvokeAsync(Open);
+    }
+
+    private async Task SaveAsync()
+    {
+        SelectCustomerResource result;
+
+        if (AddOrUpdate)
+            result = await customerService.AddCustomerAsync(Customer);
+        else
+            result = await customerService.UpdateCustomerAsync(CustomerId.GetValueOrDefault(), Customer);
+
+        if (result is not null)
+        {
+            if (AddOrUpdate)
+                await OnAddSucceeded.InvokeAsync(result);
+            else
+                await OnUpdateSucceeded.InvokeAsync(result);
+
+            if (openCustomerSummary)
+                navManager.NavigateTo($"CustomerSummary/{result.Id}");
+
+            await Close();
+        }
+        else
+        {
+            operationFailed = true;
+        }
+    }
+}

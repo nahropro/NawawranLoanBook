@@ -1,0 +1,16 @@
+label[b-ei0gvi8kfz]{
+    width: 100%;
+}
+
+.outer[b-ei0gvi8kfz]{
+    position:fixed;
+    left:0;
+    top:0;
+    width:100%;
+    background: rgba(0,0,0,0.4);
+    z-index:99999;
+}
+
+.modal-dialog[b-ei0gvi8kfz]{
+    z-index: 999999;
+}

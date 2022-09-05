@@ -1,0 +1,70 @@
+﻿@page "/loan"
+@inject IReportService reportService
+@attribute [Authorize]
+
+<PageTitle>قەرز</PageTitle>
+
+<h3>قەرز</h3>
+
+<LoanFilter @bind-Query=query OnSubmit=OnSubmitFilter />
+
+<hr />
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>كۆد</th>
+            <th>ناو</th>
+            <th>تەلەفۆن</th>
+            <th>قەرزارە</th>
+            <th>قەرزارین</th>
+        </tr>
+    </thead>
+    <tbody>
+        <Virtualize Items="@loan.Loans.ToList()">
+            <tr>
+                <td>@context.Id</td>
+                <td>
+                    <NavLink href="@($"CustomerSummary/{context.Id}")" Match="NavLinkMatch.All">
+                        @context.FullName
+                    </NavLink>
+                </td>
+                <td>@context.Phone</td>
+                <td>@(context.Balance<0?string.Format("{0:N2}", context.Balance):"")</td>
+                <td>@(context.Balance>0?string.Format("{0:N2}", context.Balance):"")</td>
+            </tr>
+        </Virtualize>
+    </tbody>
+    <tfoot>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>@string.Format("{0:N2}", loan.Loans.Where(x=> x.Balance<0).Sum(x=> x.Balance))</th>
+            <th>@string.Format("{0:N2}", loan.Loans.Where(x=> x.Balance>0).Sum(x=> x.Balance))</th>
+        </tr>
+    </tfoot>
+</table>
+
+<p>@totalLoan</p>
+
+@code {
+    private LoanReportResource loan = new LoanReportResource();
+    private LoanQueryResource query = new LoanQueryResource{CreditorOrDebter=true};
+    private string totalLoan => $"كۆی گشتی قەرز: {string.Format("{0:N2}", loan.Loans.Sum(x => x.Balance))}";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadLoanAsync();
+    }
+
+    private async Task OnSubmitFilter()
+    {
+        await LoadLoanAsync();
+    }
+
+    private async Task LoadLoanAsync()
+    {
+        loan = await reportService.GetLoanAsync(query);
+    }
+}

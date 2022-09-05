@@ -1,0 +1,99 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = false
+build_property.PlatformNeutralAssembly = 
+build_property._SupportedPlatformList = browser
+build_property.EnableSingleFileAnalyzer = 
+build_property.EnableTrimAnalyzer = true
+build_property.IncludeAllContentForSelfExtract = 
+build_property.RootNamespace = NLB.Client
+build_property.RootNamespace = NLB.Client
+build_property.ProjectDir = C:\Users\Nahro\source\Workspaces\NawawranLoanBook\NLB\NLB\Client\
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\Nahro\source\Workspaces\NawawranLoanBook\NLB\NLB\Client
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/Nahro/source/Workspaces/NawawranLoanBook/NLB/NLB/Client/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Nahro/source/Workspaces/NawawranLoanBook/NLB/NLB/Client/Pages/Loan/Loan.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9hblxMb2FuLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Nahro/source/Workspaces/NawawranLoanBook/NLB/NLB/Client/Pages/Loan/LoanFilter.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9hblxMb2FuRmlsdGVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Nahro/source/Workspaces/NawawranLoanBook/NLB/NLB/Client/Pages/RedirectToLogin.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVkaXJlY3RUb0xvZ2luLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Nahro/source/Workspaces/NawawranLoanBook/NLB/NLB/Client/Pages/SetUp.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0VXAucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Nahro/source/Workspaces/NawawranLoanBook/NLB/NLB/Client/Pages/Transactions/TransactionFilters.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVHJhbnNhY3Rpb25zXFRyYW5zYWN0aW9uRmlsdGVycy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Nahro/source/Workspaces/NawawranLoanBook/NLB/NLB/Client/Pages/UserManager/ChangePassword.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlck1hbmFnZXJcQ2hhbmdlUGFzc3dvcmQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Nahro/source/Workspaces/NawawranLoanBook/NLB/NLB/Client/Pages/UserManager/ChangeUserName.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlck1hbmFnZXJcQ2hhbmdlVXNlck5hbWUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Nahro/source/Workspaces/NawawranLoanBook/NLB/NLB/Client/Pages/UserManager/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlck1hbmFnZXJcTG9naW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Nahro/source/Workspaces/NawawranLoanBook/NLB/NLB/Client/Shared/Dialogs.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXERpYWxvZ3MucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Nahro/source/Workspaces/NawawranLoanBook/NLB/NLB/Client/Shared/SurveyPrompt.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFN1cnZleVByb21wdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Nahro/source/Workspaces/NawawranLoanBook/NLB/NLB/Client/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Nahro/source/Workspaces/NawawranLoanBook/NLB/NLB/Client/Pages/CustomerSummary/CustomerSummary.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3VzdG9tZXJTdW1tYXJ5XEN1c3RvbWVyU3VtbWFyeS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-fg8kybd2uw
+
+[C:/Users/Nahro/source/Workspaces/NawawranLoanBook/NLB/NLB/Client/Pages/Customers/Customers.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3VzdG9tZXJzXEN1c3RvbWVycy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-rtqkhh5vqq
+
+[C:/Users/Nahro/source/Workspaces/NawawranLoanBook/NLB/NLB/Client/Pages/Customers/CustomerSelector.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3VzdG9tZXJzXEN1c3RvbWVyU2VsZWN0b3IucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-2xlfix63lj
+
+[C:/Users/Nahro/source/Workspaces/NawawranLoanBook/NLB/NLB/Client/Pages/Customers/UpdateCustomer.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3VzdG9tZXJzXFVwZGF0ZUN1c3RvbWVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-ei0gvi8kfz
+
+[C:/Users/Nahro/source/Workspaces/NawawranLoanBook/NLB/NLB/Client/Pages/Transactions/Transactions.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVHJhbnNhY3Rpb25zXFRyYW5zYWN0aW9ucy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-oyla19wrw1
+
+[C:/Users/Nahro/source/Workspaces/NawawranLoanBook/NLB/NLB/Client/Pages/Transactions/UpdateTransaction.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVHJhbnNhY3Rpb25zXFVwZGF0ZVRyYW5zYWN0aW9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-k0a3frjciq
+
+[C:/Users/Nahro/source/Workspaces/NawawranLoanBook/NLB/NLB/Client/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-iwl46fay55
+
+[C:/Users/Nahro/source/Workspaces/NawawranLoanBook/NLB/NLB/Client/Shared/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-3s0akv5d0b

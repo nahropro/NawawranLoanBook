@@ -1,0 +1,53 @@
+﻿<div>
+    <EditForm class="row gy-2 gx-3 align-items-center" Model=Query OnSubmit=Submit>
+
+        <div class="col-auto">
+            <div class="input-group">
+                <div class="input-group-text">
+                    باڵانس لە
+                    <InputNumber @bind-Value=Query.BalanceStart class="form-control" placeholder="باڵانس لە" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-auto">
+            <div class="input-group">
+                <div class="input-group-text">
+                    باڵانس تا
+                    <InputNumber @bind-Value=Query.BalanceEnd class="form-control" placeholder="باڵانس تا" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-auto">
+            <div class="input-group-text">
+                جۆر
+                <InputSelect @bind-Value=Query.CreditorOrDebter class="form-select">
+                    <option value="">هەموو</option>
+                    <option value="false">قەرزارین</option>
+                    <option value="true">قەرز</option>
+                </InputSelect>
+            </div>
+        </div>
+
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">پیشاندان</button>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    [Parameter]
+    public LoanQueryResource Query { get; set; } = new LoanQueryResource();
+    [Parameter]
+    public EventCallback<LoanQueryResource> QueryChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<LoanQueryResource> OnSubmit { get; set; }
+
+    private async Task Submit()
+    {
+        await QueryChanged.InvokeAsync(Query);
+        await OnSubmit.InvokeAsync(Query);
+    }
+}

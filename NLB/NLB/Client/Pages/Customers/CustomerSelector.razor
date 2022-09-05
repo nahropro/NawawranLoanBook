@@ -1,0 +1,88 @@
+﻿@inject ICustomerService customerService
+
+<div class="parent">
+    <div class="input col">
+        <input type="text" class="form-control" placeholder="مشتەری" dir="rtl"
+               value="@fullCustomer" @oninput=@(e=> OnInput(e.Value.ToString())) />
+    </div>
+
+    @if (showTable)
+    {
+        <div class="selector row">
+            <div>
+                <div class="row">
+                    <button type="button" class="btn-close" @onclick=@(()=> showTable=false)></button>
+                </div>
+                <div class="overflow-scroll data">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>كۆد</th>
+                                <th>ناو</th>
+                                <th>تەلەفۆن</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <Virtualize Items="@customers">
+                                <tr @onclick="(()=> SelectCustomer(context))">
+                                    <td>@context.Id</td>
+                                    <td>@context.FullName</td>
+                                    <td>@context.Phone</td>
+                                </tr>
+                            </Virtualize>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public SelectCustomerResource Customer { get; set; } = new SelectCustomerResource();
+    [Parameter]
+    public EventCallback<SelectCustomerResource> CustomerChanged { get; set; }
+
+    [Parameter]
+    public int? CustomerId { get; set; }
+    [Parameter]
+    public EventCallback<int?> CustomerIdChanged { get; set; }
+
+
+    [Parameter]
+    public EventCallback<SelectCustomerResource> OnCustomerSelected { get; set; }
+
+    private List<SelectCustomerResource> customers = new List<SelectCustomerResource>();
+
+    private bool showTable = false;
+
+    private string fullCustomer =>
+        $"{Customer.FullName}{(!string.IsNullOrWhiteSpace(Customer.Phone) ? $" ({Customer.Phone})" : "")}";
+
+    private async Task OnInput(string input)
+    {
+        customers = await customerService.GetCustomersAsync(input);
+        CustomerId = null;
+        showTable = true;
+        Customer = new SelectCustomerResource();
+        CustomerChanged.InvokeAsync(Customer);
+        CustomerIdChanged.InvokeAsync(CustomerId);
+    }
+
+    private async Task SelectCustomer(SelectCustomerResource customer)
+    {
+        this.Customer = customer;
+        CustomerId = customer.Id;
+        showTable = false;
+        CustomerChanged.InvokeAsync(customer);
+        CustomerIdChanged.InvokeAsync(CustomerId);
+        OnCustomerSelected.InvokeAsync(customer);
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (CustomerId.HasValue)
+            this.Customer = await customerService.GetCustomerAsync(CustomerId.GetValueOrDefault());
+    }
+}
